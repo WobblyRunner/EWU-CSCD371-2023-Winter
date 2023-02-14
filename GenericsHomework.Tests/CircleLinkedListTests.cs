@@ -1,5 +1,3 @@
-using System.Net.Security;
-
 namespace GenericsHomework.Tests
 {
 	[TestClass]

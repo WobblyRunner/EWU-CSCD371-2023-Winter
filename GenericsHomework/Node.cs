@@ -1,6 +1,4 @@
-﻿using System.Xml.Linq;
-
-namespace GenericsHomework;
+﻿namespace GenericsHomework;
 
 public class Node<TValue> where TValue : notnull
 {
