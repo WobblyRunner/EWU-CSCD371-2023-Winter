@@ -147,10 +147,10 @@ namespace GenericsHomework.Tests
 			next3 = root.Next.Next.Next;
 			root.Clear();
 
-			Assert.AreEqual(root, root.Next);
-			Assert.AreEqual(next1, next1.Next);
-			Assert.AreEqual(next2, next2.Next);
-			Assert.AreEqual(next3, next3.Next);
+			Assert.AreEqual<Node<int>>(root, root.Next);
+			Assert.AreEqual<Node<int>>(next1, next1.Next);
+			Assert.AreEqual<Node<int>>(next2, next2.Next);
+			Assert.AreEqual<Node<int>>(next3, next3.Next);
 		}
 
 		[TestMethod]
