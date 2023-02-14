@@ -27,14 +27,8 @@ public class Node<TValue> : ICollection<TValue>, IReadOnlyNode<TValue>
 	public Node<TValue> Append(TValue value)
 	{
 		// Navigate to the end of the collection
-		Node<TValue> last = this;
-		do
-		{
-			if (last.Value.Equals(value))
-				throw new InvalidOperationException($"Cannot append duplicate value `{value}` to list.");
-			last = last.Next;
-		}
-		while (last != this);
+		if (Exists(value))
+			throw new InvalidOperationException($"Cannot append duplicate value `{value}` to list.");
 
 		var appendNode = new Node<TValue>(value, next: Next);
 		Next = appendNode;

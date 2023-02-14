@@ -16,7 +16,7 @@ public class CircleLinkedListICollectionTests
 
 		count = list.Count;
 
-		Assert.AreEqual(4, list.Count);
+		Assert.AreEqual(4, count);
 	}
 
 	[TestMethod]
@@ -39,6 +39,16 @@ public class CircleLinkedListICollectionTests
 		list.Remove(toAdd);
 		
 		Assert.IsFalse(list.Contains(toAdd));
+	}
+
+	[TestMethod]
+	[ExpectedException(typeof(InvalidOperationException))]
+	public void Node_Remove_ThrowsInvalidOperationExceptionIfSingleNodeList()
+	{
+		const char value = 'A';
+		Node<char> list = new Node<char>(value);
+
+		list.Remove(value);
 	}
 
 	[TestMethod]
