@@ -1,6 +1,4 @@
-﻿using System.Data;
-
-namespace Calculate.Tests;
+﻿namespace Calculate.Tests;
 
 [TestClass]
 public class CalculatorTests
@@ -22,18 +20,18 @@ public class CalculatorTests
 		TestCalculator = new Calculator();
 	}
 
-	void TestCalculationGivenExpression(string expression, decimal expected)
+	void TestCalculationGivenExpression(string expression, int expected)
 	{
-		bool success = TestCalculator.TryCalculate(expression, out decimal actual);
+		bool success = TestCalculator.TryCalculate(expression, out int actual);
 		Assert.IsTrue(success);
-		Assert.AreEqual<decimal>(expected, actual);
+		Assert.AreEqual<int>(expected, actual);
 	}
 
 	[TestMethod]
 	public void Calculator_DefaultAdd_SuccessReturnsSumAB()
 	{
 		const string expression = "42 + 1337";
-		const decimal expected = 42M + 1337M;
+		const int expected = 42 + 1337;
 		TestCalculationGivenExpression(expression, expected);
 	}
 
@@ -41,7 +39,7 @@ public class CalculatorTests
 	public void Calculator_DefaultSubtract_SuccessReturnsDifferenceAB()
 	{
 		const string expression = "1337 - 42";
-		const decimal expected = 1337M - 42M;
+		const int expected = 1337 - 42;
 		TestCalculationGivenExpression(expression, expected);
 	}
 
@@ -49,7 +47,7 @@ public class CalculatorTests
 	public void Calculator_DefaultMultiply_SuccessReturnsProductAB()
 	{
 		const string expression = "42 * 2";
-		const decimal expected = 42M * 2M;
+		const int expected = 42 * 2;
 		TestCalculationGivenExpression(expression, expected);
 	}
 	
@@ -57,7 +55,7 @@ public class CalculatorTests
 	public void Calculator_DefaultDivide_SuccessReturnsQuotientAB()
 	{
 		const string expression = "42 / 2";
-		const decimal expected = 42M / 2M;
+		const int expected = 42 / 2;
 		TestCalculationGivenExpression(expression, expected);
 	}
 
@@ -65,58 +63,58 @@ public class CalculatorTests
 	public void Calculator_DefaultCalculations_FailureReturnsFalseZero()
 	{
 		const string expression = @"hello, world! +-*/******=-=-+***_+*_+_*+)+!@*#*!@//?@&#@#&!@(?#?@#!?@??//@ wait, is this a calculator? 5 + 7. Did you just swipe your hands across the keyboard? Mad man. Insane. Get a grip on reality, bud. You do realize nobody would ever use a calculator like that, right? Unless if they were a toddler or something. Why would a toddler be using a calculator? Actually, that's a dumb question - of course a toddler would use a calculator, they don't know math yet. I know math but I'm writing a calculator. What's up with that, right? \/\/\/\/\\/\/\/\/\/\/\/\\//\/\/\/\/\/\/\/\/\/\/\\\\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\\/\/\/\/\/\/\/\/\/ &amp; &nbsp; &nbsp; wow an html entity? don't you think that really goes out of the bounds of this test? who'd even try that? U+00A9 wow, daring aren't we? I'm not going to add an emoji even it would make for a good test case. https://youtu.be/wHGN-fAkk5Y";
-		const decimal expected = 0M;
+		const int expected = 0;
 		bool success;
 
-		success = TestCalculator.TryCalculate(expression, out decimal actual);
+		success = TestCalculator.TryCalculate(expression, out int actual);
 
 		Assert.IsFalse(success);
-		Assert.AreEqual<decimal>(expected, actual);
+		Assert.AreEqual<int>(expected, actual);
 	}
 
 	[TestMethod]
 	public void Calculator_OverrideAddOperation_SuccessReturnsTrueExpected()
 	{
-		Calculator.BinaryOperation doubleAdd = decimal (decimal lhs, decimal rhs) => (lhs + rhs) * 2M;
+		Func<int, int, int> doubleAdd = int (int lhs, int rhs) => (lhs + rhs) * 2;
 		Calculator.Add = doubleAdd;
 		TestCalculator = new Calculator();
 		const string expression = "42 + 8";
-		const decimal expected = (42M + 8M) * 2M;
+		const int expected = (42 + 8) * 2;
 		
-		TestCalculator.TryCalculate(expression, out decimal actual);
+		TestCalculator.TryCalculate(expression, out int actual);
 
-		Assert.AreEqual<decimal>(expected, actual);
+		Assert.AreEqual<int>(expected, actual);
 	}
 
 	[TestMethod]
 	public void Calculator_ComplexExpression_SuccessReturnsLeftToRightEvaluation()
 	{
 		const string expression = "123 + 456 * 7 / 8";
-		const decimal expected = ((123M + 456M) * 7M) / 8M;
+		const int expected = ((123 + 456) * 7) / 8;
 		bool success;
 
-		success = TestCalculator.TryCalculate(expression, out decimal actual);
+		success = TestCalculator.TryCalculate(expression, out int actual);
 
 		Assert.IsTrue(success);
-		Assert.AreEqual<decimal>(expected, actual);
+		Assert.AreEqual<int>(expected, actual);
 	}
 
 	[TestMethod]
 	public void Calculator_ComplexExpressionAndOverride_SuccessReturnsLeftToRightEvaluation()
 	{
-		Calculator.BinaryOperation productIsQuotient = Calculator.Divide;
-		Calculator.BinaryOperation subtractIsAdd = Calculator.Add;
+		Func<int, int, int> productIsQuotient = Calculator.Divide;
+		Func<int, int, int> subtractIsAdd = Calculator.Add;
 		const string expression = "12 - 2 * 2";
-		const decimal expected = (12M + 2M) / 2M;
+		const int expected = (12 + 2) / 2;
 		bool success;
 
 		Calculator.Multiply = productIsQuotient;
 		Calculator.Subtract = subtractIsAdd;
 		TestCalculator = new Calculator();
 
-		success = TestCalculator.TryCalculate(expression, out decimal actual);
+		success = TestCalculator.TryCalculate(expression, out int actual);
 
 		Assert.IsTrue(success);
-		Assert.AreEqual<decimal>(expected, actual);
+		Assert.AreEqual<int>(expected, actual);
 	}
 }

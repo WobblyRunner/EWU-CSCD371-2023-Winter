@@ -1,23 +1,20 @@
-﻿using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace Calculate;
 
-public class Calculator
+public class Calculator : ICalculator<int>
 {
-	public delegate decimal BinaryOperation(decimal left, decimal right);
+	public static Func<int, int, int> Add { get; set; } = (lhs, rhs) => lhs + rhs;
+	public static Func<int, int, int> Subtract { get; set; } = (lhs, rhs) => lhs - rhs;
+	public static Func<int, int, int> Multiply { get; set; } = (lhs, rhs) => lhs * rhs;
+	public static Func<int, int, int> Divide { get;	set; } = (lhs, rhs) => lhs / rhs;
 
-	public static BinaryOperation Add { get; set; } = (lhs, rhs) => lhs + rhs;
-	public static BinaryOperation Subtract { get; set; } = (lhs, rhs) => lhs - rhs;
-	public static BinaryOperation Multiply { get; set; } = (lhs, rhs) => lhs * rhs;
-	public static BinaryOperation Divide { get;	set; } = (lhs, rhs) => lhs / rhs;
-
-	public IReadOnlyDictionary<char, BinaryOperation> MathematicalOperations { get; }
+	public IReadOnlyDictionary<char, Func<int, int, int>> MathematicalOperations { get; }
 	protected char[] Operators { get; }
 
 	public Calculator()
 	{
-		MathematicalOperations = new Dictionary<char, BinaryOperation>()
+		MathematicalOperations = new Dictionary<char, Func<int, int, int>>()
 		{
 			{ '+', Add },
 			{ '-', Subtract },
@@ -27,13 +24,13 @@ public class Calculator
 		Operators = MathematicalOperations.Keys.ToArray();
 	}
 
-	public bool TryCalculate(string expression, out decimal result)
+	public bool TryCalculate(string expression, out int result)
 	{
 		int index = expression.LastIndexOfAny(Operators);
 		if (index > -1)
 		{
-			if (decimal.TryParse(expression[(index+1)..], out decimal right)
-				&& TryCalculate(expression[..index], out decimal left))
+			if (int.TryParse(expression[(index+1)..], out int right)
+				&& TryCalculate(expression[..index], out int left))
 			{
 				result = MathematicalOperations[expression[index]].Invoke(left, right);
 				return true;
@@ -41,6 +38,13 @@ public class Calculator
 			result = 0;
 			return false;
 		}
-		return decimal.TryParse(expression, out result);
+		return int.TryParse(expression, out result);
+	}
+
+	bool ICalculator.TryCalculate(string expression, [MaybeNullWhen(false)] out object result)
+	{
+		bool success = TryCalculate(expression, out int number);
+		result = success ? number : null;
+		return success;
 	}
 }
