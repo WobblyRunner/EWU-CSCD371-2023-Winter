@@ -56,7 +56,7 @@ public class GenericCalculatorTests
 	[TestMethod]
 	public void GenericCalculator_TestOverrideMultiplyBytes_SuccessReturnsTrue()
 	{
-		Func<byte, byte, byte> multiplyIsDivide = (left, right) => (byte)(left / right);
+		static byte multiplyIsDivide(byte left, byte right) => (byte)(left / right);
 		GenericCalculator<byte>.Multiply = multiplyIsDivide;
 		GenericCalculator<byte> calculator = new GenericCalculator<byte>();
 		const string expression = "15 * 3";

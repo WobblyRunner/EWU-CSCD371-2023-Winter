@@ -48,7 +48,7 @@ public class Program
 
 		Calculator intCalculator = new();
 		GenericCalculator<decimal> realCalculator = new();
-		Func<ICalculator> getCurrentCalculator = () => program.Mode switch { ProgramMode.Generic => realCalculator, _ => intCalculator };
+		ICalculator getCurrentCalculator() => program.Mode switch { ProgramMode.Generic => realCalculator, _ => intCalculator };
 
 		string input;
 		bool terminateProgram = false;
