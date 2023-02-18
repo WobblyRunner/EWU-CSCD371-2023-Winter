@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <Title>Assignment 6 Solutiuon</Title>
+    <Title>Assignment 6 Solution</Title>
     <Authors>Joshua M. Willis</Authors>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/threenine/apiResponse</RepositoryUrl>
