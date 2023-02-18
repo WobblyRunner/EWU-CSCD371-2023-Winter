@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Title>Assignment 6 Solutiuon</Title>
+    <Authors>Joshua M. Willis</Authors>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/threenine/apiResponse</RepositoryUrl>
+    <TargetFramework>net7.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Calculate</RootNamespace>
+  </PropertyGroup>
+</Project>
